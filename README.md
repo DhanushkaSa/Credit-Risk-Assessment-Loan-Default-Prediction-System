@@ -171,7 +171,14 @@ pip install -r requirements.txt
 
 5. Run the notebooks in order:
    - `01_data_preprocessing_and_eda.ipynb` — Cleans raw data and performs EDA.
-   - `02_xgboost_model_training.ipynb` — Trains and evaluates the XGBoost model.
+   - `02_xgboost_model_training.ipynb` — Trains and evaluates the XGBoost model with MLflow tracking.
+
+6. Launch the MLflow UI to view and compare experiment runs:
+
+```bash
+mlflow ui
+```
+Open [http://localhost:5000](http://localhost:5000) in your browser.
 
 
 ## Technologies Used
@@ -183,6 +190,7 @@ pip install -r requirements.txt
 | Visualization | Matplotlib, Seaborn |
 | Machine Learning | XGBoost, scikit-learn |
 | Imbalanced Learning | imbalanced-learn (SMOTE) |
+| Experiment Tracking | MLflow |
 | Model Persistence | joblib |
 | Environment | Jupyter Notebook |
 

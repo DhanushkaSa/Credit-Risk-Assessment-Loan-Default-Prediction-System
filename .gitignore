@@ -43,6 +43,9 @@ ml_service/*.pt
 ml_service/*.onnx
 *.joblib
 *.pkl
+mlruns/
+.mlflow/
+
 
 # ========================
 # Environment variables & secrets
