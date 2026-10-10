@@ -45,6 +45,8 @@ ml_service/*.onnx
 *.pkl
 mlruns/
 .mlflow/
+mlflow.db
+mlartifacts/
 
 
 # ========================
