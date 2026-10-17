@@ -145,8 +145,8 @@ Model evaluated on a held-out test set using multiple metrics to provide an unbi
 1. Clone the repository:
 
 ```bash
-git clone https://github.com/<your-username>/credit-risk-assessment.git
-cd credit-risk-assessment
+git clone https://github.com/DhanushkaSa/Credit-Risk-Assessment-Loan-Default-Prediction-System.git
+cd Credit-Risk-Assessment-Loan-Default-Prediction-System
 ```
 
 2. Create and activate a virtual environment:
