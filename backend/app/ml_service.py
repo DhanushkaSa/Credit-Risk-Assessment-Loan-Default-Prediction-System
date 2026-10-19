@@ -10,6 +10,32 @@ BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 ARTIFACTS_DIR = os.path.join(BASE_DIR, 'ml_artifacts')
 
 
+# Compatibility patch for SHAP with XGBoost (handling '[5E-1]' base_score formatting)
+try:
+    import shap.explainers._tree as tree_mod
+    _orig_loader_init = tree_mod.XGBTreeModelLoader.__init__
+
+    def _patched_xgb_loader_init(self, xgb_model):
+        _orig_decode = tree_mod.decode_ubjson_buffer
+        def _patched_decode(fd):
+            res = _orig_decode(fd)
+            try:
+                bs = res['learner']['learner_model_param']['base_score']
+                if isinstance(bs, str) and bs.startswith('['):
+                    res['learner']['learner_model_param']['base_score'] = bs.strip('[]')
+            except Exception:
+                pass
+            return res
+        tree_mod.decode_ubjson_buffer = _patched_decode
+        try:
+            _orig_loader_init(self, xgb_model)
+        finally:
+            tree_mod.decode_ubjson_buffer = _orig_decode
+
+    tree_mod.XGBTreeModelLoader.__init__ = _patched_xgb_loader_init
+except Exception as patch_e:
+    print(f"SHAP patch notice: {patch_e}")
+
 try:
     model = joblib.load(os.path.join(ARTIFACTS_DIR, 'xgboost_credit_risk_model.joblib'))
     scaler = joblib.load(os.path.join(ARTIFACTS_DIR, 'scaler.joblib'))
@@ -19,6 +45,7 @@ try:
     print("Models and SHAP Explainer loaded successfully!")
 except Exception as e:
     print(f"Error loading artifacts: {e}")
+    explainer = None
 
 def preprocess_data(data: LoanApplication) -> pd.DataFrame:
     
